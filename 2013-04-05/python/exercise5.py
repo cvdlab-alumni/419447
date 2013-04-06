@@ -16,4 +16,10 @@ ramp = STRUCT(NN(13)([step3D,T([1,3])([stepx,stepz])]))
 
 ramp1 = T([1,2])([15+dpx/2,p+dpy+p])(ramp)
 
-VIEW(ramp1)
+ramp2 = T([1,2,3])([15+dpx/2,p+dpy+p])(ramp)
+
+ramp3 = T([1,2,3])([15+dpx/2,p+dpy+p])(ramp)
+
+building = STRUCT([ramp1, windows_north, wall, building_pillars, building_floors])
+
+VIEW(building)

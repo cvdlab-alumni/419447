@@ -52,4 +52,6 @@ floor4 = DIFFERENCE([f4, hollow_f4])
 
 building_floors = STRUCT([floor0, T([3])([h+dpz])(floor1), T([3])([h*2+dpz*2])(floor2), T([3])([h*3+dpz*3])(floor3), T([3])([h*4+dpz*4])(floor4)])
 
-VIEW(building_floors)
+building = STRUCT([building_pillars, building_floors])
+
+VIEW(building)

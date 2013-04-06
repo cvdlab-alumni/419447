@@ -93,5 +93,7 @@ var floor4 = STRUCT([GRID([[-p*2,-dpx*2,p*3,dpx*2],[p,dpy],[dpz]]),
 
 var building_floors = STRUCT([floor0, T([3])([h+dpz])(floor1), T([3])([h*2+dpz*2])(floor2), T([3])([h*3+dpz*3])(floor3), T([3])([h*4+dpz*4])(floor4)])
 
-VIEW(building_floors)
+building = STRUCT([building_pillars, building_floors])
+
+VIEW(building)
 

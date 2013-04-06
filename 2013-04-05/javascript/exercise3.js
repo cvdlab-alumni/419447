@@ -133,4 +133,6 @@ wall1_2_3_west = STRUCT([T([3])([dpz+h])(wall1_west),T([3])([dpz*2+h*2])(wall2_w
 
 wall = T([3])([dpz])(STRUCT([wall0, wall1_2_3_north,wall1_2_3_east,wall1_2_3_south, wall1_2_3_west]))
 
-VIEW(wall)
+building = STRUCT([wall, building_pillars, building_floors])
+
+VIEW(building)

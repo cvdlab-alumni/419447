@@ -64,4 +64,6 @@ windows_thin_north = STRUCT(NN(3)([window_thin_north,T([3])([dpz+h])]))
 
 windows_north = STRUCT([windows_large_north, windows_thin_north])
 
-VIEW(windows_north)
+building = STRUCT([windows_north, wall, building_pillars, building_floors])
+
+VIEW(building)
