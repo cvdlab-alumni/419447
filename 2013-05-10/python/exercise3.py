@@ -86,6 +86,18 @@ def hub (hub_radius_in, hub_radius_out):
 
 		return hub
 
+def torus(R, r):
+	def torus0(v):
+		a = v[0]
+		b = v[1]
+
+		u = (r*COS(a)+R)*COS(b)
+		v = (r*COS(a)+R)*SIN(b)
+		w = (r*SIN(a))
+
+		return [u,v,w]
+	return torus0
+
 #LATO
 
 p0 = [[1.29, 3.79], [1.2, 5.23], [2.73, 4.96], [2.57, 3.73]]
@@ -253,11 +265,11 @@ hub = hub(0.7,1.1)
 dom2D = GRID([30,30])#[0.6,0,0.7],[3,0,1],[4,0,1]
 p0 = [[0,0,0],[1.2,0,0]]
 r0 = BEZIER(S1)(p0)
-p1 = [[-1.6,4,1],[2,4,1]]#translatePoints([0,4,1])(p0)
+p1 = [[-1.6,4,1],[2.8,4,1]]#translatePoints([0,4,1])(p0)
 r1 = BEZIER(S1)(p1)
 p2 = [[0,0,0],[1.2,0.6,0.7],[-0.4,3,1],[-1.6,4,1]]
 r2 = BEZIER(S2)(p2)
-p3 = [[1.2,0,0],[0,0.6,0.7],[0.8,3,1],[2,4,1]]#translatePoints([2,0,0])(p2)
+p3 = [[1.2,0,0],[0,0.6,0.7],[1.6,3,1],[2.8,4,1]]#translatePoints([2,0,0])(p2)
 r3 = BEZIER(S2)(p3)
 #out = STRUCT([MAP(c0)(dom2D),MAP(c1)(dom2D),MAP(c2)(dom2D),MAP(c3)(dom2D)])
 
@@ -265,10 +277,45 @@ surface = COONSPATCH([r0,r1,r2,r3])
 solidMapping = THINSOLID(surface)
 domain3D = PROD([PROD([INTERVALS(1)(10),INTERVALS(1)(10)]),INTERVALS(0.5)(1)])
 ray = T([1,2])([-0.6,1])(S([1,2,3])([1./3,1./3,1./3])(MAP(solidMapping)(domain3D)))
-#VIEW(ray)
-rays = T(3)(5-0.2)(STRUCT(NN(5)([ray, R([1,2])(2*PI/5)])))
 
-wheel_big = STRUCT([hub, rim, tire, rays])
+
+p4 = [[0,0,0],[0.4,0,0]]
+r4 = BEZIER(S1)(p4)
+p5 = [[-1.6,4,1],[0.4,4,1]]#translatePoints([0,4,1])(p0)
+r5 = BEZIER(S1)(p5)
+p6 = [[0,0,0],[1.2,0.6,0.7],[-0.4,3,1],[-1.6,4,1]]
+r6 = BEZIER(S2)(p6)
+p7 = [[0.4,0,0],[0.4,0.6,0.7],[0.4,3,1],[0.4,4,1]]#translatePoints([2,0,0])(p2)
+r7 = BEZIER(S2)(p7)
+
+surface = COONSPATCH([r4,r5,r6,r7])
+solidMapping = THINSOLID(surface)
+domain3D = PROD([PROD([INTERVALS(1)(10),INTERVALS(1)(10)]),INTERVALS(0.5)(1)])
+mini_ray_left = T([1,2])([-0.6,1])(S([1,2,3])([1./3,1./3,1./3])(MAP(solidMapping)(domain3D)))
+
+
+p8 = [[0.8,0,0],[1.2,0,0]]
+r8 = BEZIER(S1)(p8)
+p9 = [[0.8,4,1],[2.8,4,1]]
+r9 = BEZIER(S1)(p9)
+p10= [[0.8,0,0],[0.8,0.6,0.7],[0.8,3,1],[0.8,4,1]]
+r10 = BEZIER(S2)(p10)
+p11= [[1.2,0,0],[0,0.8,0.7],[1.6,3,1],[2.8,4,1]]
+r11 = BEZIER(S2)(p11)
+surface = COONSPATCH([r8,r9,r10,r11])
+solidMapping = THINSOLID(surface)
+domain3D = PROD([PROD([INTERVALS(1)(10),INTERVALS(1)(10)]),INTERVALS(0.5)(1)])
+mini_ray_right = T([1,2])([-0.6,1])(S([1,2,3])([1./3,1./3,1./3])(MAP(solidMapping)(domain3D)))
+
+mini_ray = STRUCT([mini_ray_left,mini_ray_right])
+
+#VIEW(ray)
+rays = T(3)(5-0.3)(STRUCT(NN(5)([ray, R([1,2])(2*PI/5)])))
+mini_rays = COLOR(GRAY)(T(3)(5-0.2)(STRUCT(NN(5)([mini_ray, R([1,2])(2*PI/5)]))))
+
+all_rays = STRUCT([mini_rays, rays])
+
+wheel_big = STRUCT([hub, rim, tire, all_rays])
 
 wheel = S([1,2,3])([1./12,1./12,1./12])(wheel_big)
 
